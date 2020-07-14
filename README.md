@@ -65,3 +65,17 @@ You can download and access to data following the next instructions:
 wget http://elib.zib.de/pub/mp-testdata/mincost/netg.tar.gz
 tar -xvf netg.tar.gz
 ```
+
+**Note** *.gitignore* ignore `tar.gz` and `.net` files. Also ignore `netg/` directory (generated after extract `tar.gz`)
+
+
+### For develop
+With conda environment you can use Rstudio and Jupyter-notebook (both share libraries in r-env).
+```bash
+rstudio # For init Rstudio
+jupyter-notebook # For run jupyter env
+```
+
+
+
+
