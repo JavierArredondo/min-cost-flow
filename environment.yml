@@ -1,0 +1,11 @@
+name: r-env
+channels:
+  - defaults
+dependencies:
+  - r-essentials
+  - r-base
+  - rstudio
+  - pip:
+          - psrecord == 1.2
+prefix: /home/$USER/anaconda3/envs/r-env
+
