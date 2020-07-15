@@ -10,10 +10,19 @@ convert_file = function(ptrn, lines) {
 }
 
 get_arcs = function(mask, nodes, val) {
-  df = data.frame(V1 = "a",
-                  V2 = nodes$V2[mask],
-                  V3 = rep(val, sum(mask)),
-                  V7 = nodes$V3[mask])
+  if (val == 25001) {
+    df = data.frame(V1 = "a",
+                    V2 = rep(val, sum(mask)),
+                    V3 = nodes$V2[mask],
+                    V7 = nodes$V3[mask])
+  }
+  else {
+    df = data.frame(V1 = "a",
+                    V2 = nodes$V2[mask],
+                    V3 = rep(val, sum(mask)),
+                    V7 = nodes$V3[mask])
+  }
+  
   df$V4 = 0
   df$V5 = 0
   df$V6 = 0
@@ -30,12 +39,21 @@ read_network = function(filepath) {
   source_nodes = nodes$V3 >  0
   sink_nodes = nodes$V3 <  0
   
-  source = get_arcs(source_nodes, nodes, 0)
-  sink = get_arcs(sink_nodes, nodes, -1)
+  source = get_arcs(source_nodes, nodes, 25001)
+  sink = get_arcs(sink_nodes, nodes, 25002)
   
   res = rbind(source, arcs, sink)
 
   return(res)
 }
 
-arcs = read_network("netg/stndrd1.net")
+eval_flow = function(low_cap, capacity, cost, flow) {
+  is_used = flow > 0
+  total_cost = is_used * cost
+  return(total_cost)
+}
+
+
+
+net = read_network("netg/stndrd1.net")
+eval_flow(arcs$V4, arcs$V5, arcs$V6, arcs$V7)
