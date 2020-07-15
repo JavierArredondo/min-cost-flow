@@ -5,6 +5,7 @@ dependencies:
   - r-essentials
   - r-base
   - rstudio
+  - r-igraph
   - pip:
           - psrecord == 1.2
 prefix: /home/$USER/anaconda3/envs/r-env
