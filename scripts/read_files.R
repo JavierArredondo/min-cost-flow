@@ -5,7 +5,6 @@ convert_file = function(ptrn, lines) {
   cat(content, file = tmp_file, sep = "\n")
   df = read.table(tmp_file, sep=" ")
   unlink(tmp_file)
-  df$V7 = 0
   return(df)
 }
 
@@ -14,17 +13,16 @@ get_arcs = function(mask, nodes, val, origin=TRUE) {
     df = data.frame(V1 = "a",
                     V2 = rep(val, sum(mask)),
                     V3 = nodes$V2[mask],
-                    V7 = nodes$V3[mask])
+                    V4 = nodes$V3[mask],
+                    V5 = nodes$V3[mask])
   }
   else {
     df = data.frame(V1 = "a",
                     V2 = nodes$V2[mask],
                     V3 = rep(val, sum(mask)),
-                    V7 = nodes$V3[mask])
+                    V4 = -nodes$V3[mask],
+                    V5 = -nodes$V3[mask])
   }
-  
-  df$V4 = 0
-  df$V5 = 1
   df$V6 = 0
   return(df)
 }
@@ -42,13 +40,11 @@ read_network = function(filepath) {
   source = get_arcs(source_nodes, nodes, 25001)
   sink = get_arcs(sink_nodes, nodes, 25002, origin = FALSE)
   
+  arcs
+  source
+  
   res = rbind(arcs, source, sink)
+  res$V7 = 0
   colnames(res) = c("type", "tail", "head", "low", "cap", "cost", "flow")
   return(res)
-}
-
-eval_flow = function(low_cap, capacity, cost, flow) {
-  is_used = flow > 0
-  total_cost = is_used * cost
-  return(total_cost)
 }
