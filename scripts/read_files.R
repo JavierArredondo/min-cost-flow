@@ -9,8 +9,8 @@ convert_file = function(ptrn, lines) {
   return(df)
 }
 
-get_arcs = function(mask, nodes, val) {
-  if (val == 25001) {
+get_arcs = function(mask, nodes, val, origin=TRUE) {
+  if (origin) {
     df = data.frame(V1 = "a",
                     V2 = rep(val, sum(mask)),
                     V3 = nodes$V2[mask],
@@ -24,7 +24,7 @@ get_arcs = function(mask, nodes, val) {
   }
   
   df$V4 = 0
-  df$V5 = 0
+  df$V5 = 1
   df$V6 = 0
   return(df)
 }
@@ -40,10 +40,10 @@ read_network = function(filepath) {
   sink_nodes = nodes$V3 <  0
   
   source = get_arcs(source_nodes, nodes, 25001)
-  sink = get_arcs(sink_nodes, nodes, 25002)
+  sink = get_arcs(sink_nodes, nodes, 25002, origin = FALSE)
   
-  res = rbind(source, arcs, sink)
-
+  res = rbind(arcs, source, sink)
+  colnames(res) = c("type", "tail", "head", "low", "cap", "cost", "flow")
   return(res)
 }
 
@@ -52,8 +52,3 @@ eval_flow = function(low_cap, capacity, cost, flow) {
   total_cost = is_used * cost
   return(total_cost)
 }
-
-
-
-net = read_network("netg/stndrd1.net")
-eval_flow(arcs$V4, arcs$V5, arcs$V6, arcs$V7)
