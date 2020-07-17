@@ -71,6 +71,8 @@ solution = run_pipe(start_node, end_node, net)
 parcial_cost = eval_cost_flow(solution)
 is_solution(solution, start_node, end_node)
 parcial_cost
-#solution[solution$flow != 0, ]
-#solution[solution$head == 126 | solution$tail == 126, ]
 
+small = read.csv("small.csv")
+small
+
+a  = run_pipe(1, 6, small)
