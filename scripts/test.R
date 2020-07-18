@@ -10,15 +10,15 @@ select_min = function(node, graph) {
 }
 
 select_random = function(node, graph) {
-  possibles_to = graph[graph$tail == node, ]
+  possibles_to = graph[graph$tail == node & graph$cap > graph$flow, ]
   to = sample(1:nrow(possibles_to), 1)
   return(possibles_to[to, ])
 }
 
-open_pipe = function(arc, graph) {
-  if(arc$cap >= arc$flow) {
+open_pipe = function(arc, graph, flow_with_dembow) {
+  if(arc$cap >= arc$flow + flow_with_dembow) {
     row_index = rownames(arc)
-    arc$flow = arc$cap
+    arc$flow = arc$flow + flow_with_dembow#arc$cap
     graph[row_index,] =  arc
   }
   return(graph)
@@ -27,22 +27,8 @@ open_pipe = function(arc, graph) {
 current_random = function(graph) {
   mask = graph$flow != 0
   current = graph[mask, ]
-  availables = unique(c(current$head, current$tail))
+  availables = unique(current$head)
   return(sample(availables, 1))
-}
-
-run_pipe = function(start, end, graph) {
-  # while input != output
-  in_node = start
-  for(i in c(1:10)) {
-    print(in_node)
-    if (in_node != end) {
-      go_to = select_random(in_node, graph)
-      graph = open_pipe(go_to, graph)
-      in_node = current_random(graph)
-    }
-  }
-  return(graph)
 }
 
 eval_cost_flow = function(graph) {
@@ -61,7 +47,50 @@ is_solution = function(graph, start, end) {
     )
   
 }
-  
+
+yet_available = function(in_node, graph, input_flow) {
+  possible_to = graph[graph$tail == in_node, ]
+  return(input_flow > sum(possible_to$flow))
+}
+
+run_pipe = function(start, end, graph, input_flow, ouput_flow) {
+  set.seed(input_flow)
+  # while input != output
+  in_node = start
+  flow_available = input_flow
+  for(i in c(1:30)) {
+    print(sum(graph$flow[graph$tail == in_node]))
+    print(sum(graph$flow[graph$head == in_node]))
+    print(input_flow)
+    if (sum(graph$flow[graph$tail == in_node]) != input_flow)  {
+      go_to = select_random(in_node, graph)
+      aux = c(1:(go_to$cap - go_to$flow))
+      flow = sample(aux[aux<=flow_available], 1)
+      
+      if(go_to$cap >= (flow + go_to$flow) & (flow_available - flow) >= 0) {
+        graph = open_pipe(go_to, graph, flow)
+        flow_available = flow_available - flow
+      }
+    }
+    print(graph[graph$tail == in_node, ])
+    if(!yet_available(in_node, graph, input_flow)) {
+      in_node = current_random(graph)
+      flow_available = sum(graph$flow[graph$head == in_node])
+      input_flow = flow_available
+      print(flow_available)
+      print(in_node)
+      print(graph)
+    }
+  }
+  return(graph)
+}
+small = read.csv("small.csv")
+small
+
+a  = run_pipe(1, 6, small, 20, -20)
+a
+
+
 start_node = 25001
 end_node = 25002
 
@@ -72,7 +101,4 @@ parcial_cost = eval_cost_flow(solution)
 is_solution(solution, start_node, end_node)
 parcial_cost
 
-small = read.csv("small.csv")
-small
 
-a  = run_pipe(1, 6, small)
