@@ -58,28 +58,47 @@ run_pipe = function(start, end, graph, input_flow, ouput_flow) {
   # while input != output
   in_node = start
   flow_available = input_flow
-  for(i in c(1:30)) {
-    print(sum(graph$flow[graph$tail == in_node]))
-    print(sum(graph$flow[graph$head == in_node]))
-    print(input_flow)
-    if (sum(graph$flow[graph$tail == in_node]) != input_flow)  {
-      go_to = select_random(in_node, graph)
+  for(i in c(1:100)) {
+    #if (sum(graph$flow[graph$tail == in_node]) != input_flow)  {
+    if (nrow(graph[graph$tail == in_node, ]) != 0) {
+      is_final = which(small$head == end & small$tail == in_node)
+      if (length(is_final) > 0) {
+        if(graph$cap[is_final] > graph$flow[is_final]) {
+          go_to = graph[which(small$head == end & small$tail == in_node), ]
+        }
+        else {
+          go_to = select_random(in_node, graph)
+        }
+      }
+      else {
+        go_to = select_random(in_node, graph)
+      }
       aux = c(1:(go_to$cap - go_to$flow))
       flow = sample(aux[aux<=flow_available], 1)
-      
-      if(go_to$cap >= (flow + go_to$flow) & (flow_available - flow) >= 0) {
+      if(go_to$cap >= (flow + go_to$flow) &
+         (flow_available - flow) >= 0){
         graph = open_pipe(go_to, graph, flow)
         flow_available = flow_available - flow
       }
     }
-    print(graph[graph$tail == in_node, ])
+    #print(in_node)
+    #print(!yet_available(in_node, graph, input_flow))
+    #print(graph)
     if(!yet_available(in_node, graph, input_flow)) {
       in_node = current_random(graph)
       flow_available = sum(graph$flow[graph$head == in_node])
       input_flow = flow_available
-      print(flow_available)
+      
+      print(sum(graph$flow[graph$tail == start]))
+      print(sum(graph$flow[graph$head == end]))
       print(in_node)
+    }
+    else {
+      in_node = current_random(graph)
+      flow_available = sum(graph$flow[graph$head == in_node])
+      input_flow = flow_available
       print(graph)
+      print(in_node)
     }
   }
   return(graph)

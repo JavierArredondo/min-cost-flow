@@ -42,3 +42,4 @@ netg/
 *.net
 .Rproj.user
 *.tar.gz
+.idea/
