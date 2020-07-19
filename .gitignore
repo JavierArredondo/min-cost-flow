@@ -43,3 +43,4 @@ netg/
 .Rproj.user
 *.tar.gz
 .idea/
+.ipynb_checkpoints/
