@@ -21,8 +21,8 @@ solutioned = False
 small = read_file(file)
 for i in tqdm(range(0, 100)):
     while not solutioned:
-        sol = run_pipe(1, 6, small, 20, -20)
-        solutioned = is_solution(sol, 1, 6)
+        sol = run_pipe(25001, 25002, small, 100000, -100000)
+        solutioned = is_solution(sol, 25001, 25002)
         if solutioned:
             sol.to_csv(f"solutions/{title}_{i}.csv", index=False)
             cost = compute_total_cost(sol)

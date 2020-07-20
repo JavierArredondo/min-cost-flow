@@ -71,7 +71,7 @@ def compute_total_cost(network: pd.DataFrame) -> int:
     return (network["cost"] * used).sum()
 
 
-def run_pipe(start: int, end: int, network: pd.DataFrame, input_flow, output_flow, how_try=1000):
+def run_pipe(start: int, end: int, network: pd.DataFrame, input_flow, output_flow, how_try=50000):
     in_node = start
     flow_available = input_flow
     network = network.copy()
@@ -91,6 +91,13 @@ def run_pipe(start: int, end: int, network: pd.DataFrame, input_flow, output_flo
             # display(f"available: {flow_available} aa {network['flow'][network['tail'] == in_node].sum()}")
             # display(network)
         if go_to is None or tries >= how_try:
+            aux = network["head"].unique()
+            for i in aux:
+                in_flow = network["flow"][network["head"] == i].sum()
+                out_flow = network["flow"][network["tail"] == i].sum()
+                cap = network["cap"][network["tail"] == i].sum()
+                print(f"({tries})In node {i} {in_flow}->{out_flow} / {cap}")
+            print("\n\n")
             break
         tries+=1
     return network
