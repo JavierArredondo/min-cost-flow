@@ -19,16 +19,15 @@ costs = []
 solutioned = False
 #small = pd.read_csv(file)
 small = read_file(file)
-for i in tqdm(range(0, 20)):
+for i in tqdm(range(0, 100)):
     while not solutioned:
-        print(i)
-        sol = run_pipe(1, 6, small, 20, -20, how_try=100000)
+        sol = run_pipe(1, 6, small, 20, -20)
         solutioned = is_solution(sol, 1, 6)
         if solutioned:
-            sol.to_csv(f"{title}_{i}.csv", index=False)
+            sol.to_csv(f"solutions/{title}_{i}.csv", index=False)
             cost = compute_total_cost(sol)
             costs.append(cost)
-        print(f"{i} -> {solutioned} : {compute_total_cost(sol)}")
+        #print(f"{i} -> {solutioned} : {compute_total_cost(sol)}")
         del sol
     solutioned = False
 

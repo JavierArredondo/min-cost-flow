@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import random
 
 from read_files import *
@@ -89,7 +90,7 @@ def run_pipe(start: int, end: int, network: pd.DataFrame, input_flow, output_flo
             flow_available = input_flow - network["flow"][network["tail"] == in_node].sum()
             # display(f"available: {flow_available} aa {network['flow'][network['tail'] == in_node].sum()}")
             # display(network)
-        if go_to is None or tries > how_try:
+        if go_to is None or tries >= how_try:
             break
-        tries += 1
+        tries+=1
     return network
