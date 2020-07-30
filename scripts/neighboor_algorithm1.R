@@ -23,7 +23,7 @@ chooseOutputArc <- function(graph, node, flow){
     arcs <- arcs[arcs!=todelete]
   }
   if(length(arcs)==0 || is.na(arcs)){
-    return(-1)
+    return(NA)
   }
   else if(length(arcs)==1 && !is.na(arcs)){
     return(invisible(arcs[1]))
@@ -45,7 +45,7 @@ chooseOutputArc.nonZero<- function(graph, node, flow){
     else{
       arcs <- arcs[arcs!=arcs[i]]
       if(length(arcs)==0){
-        return(-1)
+        return(NA)
       }
       else if(length(arcs)==1){
         return(arcs[1])
@@ -108,7 +108,7 @@ outputFlow <- function(graph, flow, node){
   return(invisible(output))
 }
 
-generateNeighboor <- function(graph, nodes, flows){
+generateNeighboor1 <- function(graph, nodes, flows){
   original <- flow
   temp <- TRUE
   while(temp){
@@ -127,14 +127,14 @@ generateNeighboor <- function(graph, nodes, flows){
     cost <- nodes[i]
     if(output > input+cost){
       outputArc <- chooseOutputArc.nonZero(graph = graph, node = i, flow = flow)
-      if(outputArc == -1){
+      if(is.na(outputArc)){
         return(invisible(original))
       }
       flow <- subtractOneToFlow(flow = flow, arc = outputArc)
     }
     else if(output < input+cost){
       outputArc <- chooseOutputArc(graph = graph, node = i, flow = flow)
-      if(outputArc == -1){
+      if(is.na(outputArc)){
         return(invisible(original))
       }
       flow <- addOneToFlow(flow = flow, arc = outputArc)
@@ -189,22 +189,22 @@ basicMetaheuristic <- function(graph, nodes, flow, iterations){
   return(invisible(flow))
 }
 
+example <- function(){
+  tail <- c(1,1,2,2,2,3,3,4,5)
+  head <- c(2,3,3,4,5,4,5,5,3)
+  low <- c(0,0,0,0,0,0,0,0,0)
+  cap <- c(15,8,1000,100,100,100,500,1000,400)
+  cost <- c(4,4,2,2,6,1,3,2,1)
 
-tail <- c(1,1,2,2,2,3,3,4,5)
-head <- c(2,3,3,4,5,4,5,5,3)
-low <- c(0,0,0,0,0,0,0,0,0)
-cap <- c(15,8,1000,100,100,100,500,1000,400)
-cost <- c(4,4,2,2,6,1,3,2,1)
+  graph <- data.frame(tail,head,low,cap,cost)
+  flow <- c(12, 8, 0, 5, 7, 0, 8, 0, 0)
+  nodes <- c(20, 0, 0, -5, -15)
 
-graph <- data.frame(tail,head,low,cap,cost)
-flow <- c(12, 8, 0, 5, 7, 0, 8, 0, 0)
-nodes <- c(20, 0, 0, -5, -15)
-
-neigh <- generateNeighborhood(graph, nodes, flow, 5)
-c <- NULL
-for(i in 1:10){
-  c[i] <- calculateCost(graph, as.numeric(neigh[i,]))
+  neigh <- generateNeighborhood(graph, nodes, flow, 5)
+  c <- NULL
+  for(i in 1:10){
+    c[i] <- calculateCost(graph, as.numeric(neigh[i,]))
+  }
+  plot(sort(c, decreasing=TRUE))
 }
-plot(sort(c, decreasing=TRUE))
-
-best <- basicMetaheuristic(graph, nodes, flow, 100)
+#best <- basicMetaheuristic(graph, nodes, flow, 100)
