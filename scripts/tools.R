@@ -216,6 +216,5 @@ example <- function(){
   flow <- c(12, 8, 0, 5, 7, 0, 8, 0, 0)
   nodes <- c(20, 0, 0, -5, -15)
 
-
 }
 #best <- basicMetaheuristic(graph, nodes, flow, 100)
