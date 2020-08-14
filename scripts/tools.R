@@ -58,9 +58,7 @@ redistributeFlow2 <- function(graph, flow){
         aux <- sample(1:flow[arc], 1)
         flow[arc] <- flow[arc] - aux
         arcs <- as.numeric(rownames(graph[graph$tail==graph[arc,]$tail, ]))
-        
         for(i in 1:length(arcs)){
-          
           if(aux>0 && i == length(arcs)){
             if(aux + flow[arcs[i]] <= graph[arcs[i],]$cap ){
               flow[arcs[i]] <- flow[arcs[i]] + aux
@@ -97,6 +95,7 @@ redistributeFlow2 <- function(graph, flow){
 addDifferenceToOutputFlow <- function(graph, flow, node, toAdd){
   arcs <- as.numeric(rownames(graph[graph$tail == node,]))
   if(length(arcs) == 0){
+
     return(NULL)
   }
   aux <- toAdd
@@ -110,6 +109,7 @@ addDifferenceToOutputFlow <- function(graph, flow, node, toAdd){
           return(invisible(flow))
         }
         else{
+
           return(NULL)
         }
       }
@@ -150,6 +150,7 @@ subtractDifferenceToOutputFlow <- function(graph, flow, node, toAdd){
           return(invisible(flow))
         }
         else{
+
           return(NULL) 
         }
       }
