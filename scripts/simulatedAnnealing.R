@@ -1,3 +1,4 @@
+library(ggpubr)
 simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta){
   s <- flow
   T <- Tmax
@@ -5,7 +6,9 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta){
   actualSolution <- flow
   n = 1
   k = 1
+  temperatures <- NULL
   costs <- NULL
+  bestCostByT <- NULL
   while(T > Tmin){
     for(i in 1:it){
       neighbor <- FUN(graph, nodes, actualSolution)
@@ -29,9 +32,21 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta){
     #T <- T - n*beta
     T <- T*beta
     print(T)
+    temperatures[n] <- T
+    bestCostByT[n] <- actualCost
     n <- n + 1
   }
-  plot(costs)
+  x <- 1:length(costs)
+  costs <- data.frame(costs,x)
+  temperatures <- data.frame(bestCostByT, temperatures)
+  p1 <- ggscatter(costs, "x", "costs", size = 2, 
+                  xlab = "Iteración", ylab = "Costo",
+                 mean.point = TRUE, color = "#00AFBB", shape = 21)
+  p2 <- ggscatter(temperatures, "temperatures", "bestCostByT", size = 2,
+                 xlab = "Temperatura",  ylab = "Costo",
+                 mean.point = TRUE, color = "#00AFBB", shape = 21)
+  print(p1)
+  print(p2)
   
   print(actualCost)
   return(invisible(actualSolution))
