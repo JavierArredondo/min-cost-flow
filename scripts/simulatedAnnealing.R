@@ -4,12 +4,12 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta){
   actualCost <- calculateCost(graph, flow)
   actualSolution <- flow
   n = 1
+  k = 1
   costs <- NULL
   while(T > Tmin){
     for(i in 1:it){
       neighbor <- FUN(graph, nodes, actualSolution)
       cost <- calculateCost(graph, neighbor)
-      costs[i] <- cost
       delta_E <- cost - actualCost
       if(delta_E <= 0){
         actualCost <- cost
@@ -23,8 +23,12 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta){
           actualSolution <- neighbor
         }
       }
+      costs[k] <- actualCost
+      k <- k+1
     }
-    T <- T - n*beta
+    #T <- T - n*beta
+    T <- T*beta
+    print(T)
     n <- n + 1
   }
   plot(costs)

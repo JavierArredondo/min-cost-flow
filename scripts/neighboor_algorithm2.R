@@ -44,6 +44,9 @@ redistributeFlow <- function(graph, flow){
 
 addDifferenceToOutputFlow <- function(graph, flow, node, toAdd){
   arcs <- as.numeric(rownames(graph[graph$tail == node,]))
+  if(length(arcs) == 0){
+    return(NULL)
+  }
   aux <- toAdd
   original <- flow
   while(TRUE){
@@ -81,6 +84,9 @@ addDifferenceToOutputFlow <- function(graph, flow, node, toAdd){
 
 subtractDifferenceToOutputFlow <- function(graph, flow, node, toAdd){
   arcs <- as.numeric(rownames(graph[graph$tail == node,]))
+  if(length(arcs) == 0){
+    return(NULL)
+  }
   aux <- toAdd
   original <- flow
   while(TRUE){
@@ -123,6 +129,7 @@ generateNeighboor2 <- function(graph, nodes, flows){
     input <- inputFlow(graph = graph, flow = flow, node = i)
     output <- outputFlow(graph = graph, flow = flow, node = i)
     cost <- nodes[i]
+
     if(output > input+cost){
       toAdd <- output - (input+cost)
       flow <- subtractDifferenceToOutputFlow(graph, flow, i, toAdd)

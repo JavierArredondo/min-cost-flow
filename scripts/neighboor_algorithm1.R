@@ -7,7 +7,6 @@ chooseRandomArc <- function(graph, flow){
       }
     }
   }
-  
 }
 
 chooseOutputArc <- function(graph, node, flow){
@@ -145,15 +144,14 @@ generateNeighboor1 <- function(graph, nodes, flows){
 }
 
 calculateCost <- function(graph, flow){
-  graph$flow <- flow
-  cost <- sum(graph$flow*graph$cost)
+  cost <- sum(flow*graph$cost)
   return(invisible(cost))
 }
 
-generateNeighborhood<- function(graph, nodes, flow, poblation){
+generateNeighborhood<- function(graph, nodes, flow, poblation, FUN){
   neighborhood <- data.frame()
   for(i in 1:poblation){
-    neighborhood <- rbind(neighborhood,generateNeighboor(graph, nodes, flow))
+    neighborhood <- rbind(neighborhood,FUN(graph, nodes, flow))
   }
   return(invisible(neighborhood))
 }
@@ -163,7 +161,6 @@ chooseBestFit <- function(graph, neighborhood){
   for(i in 1:nrow(neighborhood)){
     cost[i] <- calculateCost(graph, as.numeric(neighborhood[i,]))
   }
-  print(cost)
   min <- which.min(cost)
   chosen <- list(min, cost[min])
   return(invisible(chosen))
@@ -174,10 +171,9 @@ basicMetaheuristic <- function(graph, nodes, flow, iterations){
   costs <- c()
   costs <- append(costs, actualCost)
   for(i in 1:iterations){
-    neighborhood <- generateNeighborhood(graph, nodes, flow, 100)
+    neighborhood <- generateNeighborhood(graph, nodes, flow, 400)
     bestFit <- chooseBestFit(graph, neighborhood)
     costs <- append(costs, bestFit[[2]])
-    print(actualCost)
     if(bestFit[[2]]<actualCost){
       actualCost <- bestFit[[2]]
       index <- bestFit[[1]]
