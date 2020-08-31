@@ -1,5 +1,5 @@
 library(ggpubr)
-simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta, name=NULL){
+simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta, name=NULL, f=NULL){
   s <- flow
   T <- Tmax
   actualCost <- calculateCost(graph, flow)
@@ -31,7 +31,7 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta, name
     }
     #T <- T - n*beta
     T <- T*beta
-    # print(T)
+    print(T)
     temperatures[n] <- T
     bestCostByT[n] <- actualCost
     n <- n + 1
@@ -40,8 +40,8 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta, name
   
   title = paste(length(nodes), nrow(graph), Tmax, Tmin, it, beta)
   
-  file_temperature = paste(name, "temperatures",length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
-  file_costs = paste(name, "costs",length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
+  file_temperature = paste(name, "temperatures", f, length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
+  file_costs = paste(name, "costs", f, length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
   
   costs <- data.frame(costs,x)
   temperatures <- data.frame(bestCostByT, temperatures)
