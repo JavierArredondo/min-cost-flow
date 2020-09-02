@@ -1,5 +1,6 @@
-library(ggpubr)
-simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta, name=NULL, f=NULL){
+#library(ggpubr)
+
+simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax, Tmin, it, beta, name=NULL, f=NULL){
   s <- flow
   T <- Tmax
   actualCost <- calculateCost(graph, flow)
@@ -38,26 +39,26 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax,Tmin,it, beta, name
   }
   x <- 1:length(costs)
   
-  title = paste(length(nodes), nrow(graph), Tmax, Tmin, it, beta)
+  #title = paste(length(nodes), nrow(graph), Tmax, Tmin, it, beta)
   
-  file_temperature = paste(name, "temperatures", f, length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
-  file_costs = paste(name, "costs", f, length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
+  #file_temperature = paste(name, "temperatures", f, length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
+  #file_costs = paste(name, "costs", f, length(nodes), nrow(graph), Tmax, Tmin, it, beta, sep = "_")
   
-  costs <- data.frame(costs,x)
-  temperatures <- data.frame(bestCostByT, temperatures)
+  #costs <- data.frame(costs,x)
+  #temperatures <- data.frame(bestCostByT, temperatures)
   
-  p1 <- ggscatter(costs, "x", "costs", size = 2, title = title,
-                  xlab = "Iteración", ylab = "Costo",
-                 mean.point = FALSE, color = "#00AFBB", shape = 21) %>% 
-    ggexport(filename = paste0("../plots/", file_costs, ".png"), width = 720, height = 720)
+  #p1 <- ggscatter(costs, "x", "costs", size = 2, title = title,
+  #                xlab = "Iteración", ylab = "Costo",
+  #               mean.point = FALSE, color = "#00AFBB", shape = 21) %>% 
+  #  ggexport(filename = paste0("../plots/", file_costs, ".png"), width = 720, height = 720)
   
-  p2 <- ggscatter(temperatures, "temperatures", "bestCostByT", size = 2, title = title,
-                 xlab = "Temperatura",  ylab = "Costo",
-                 mean.point = FALSE, color = "#00AFBB", shape = 21) %>% 
-    ggexport(filename = paste0("../plots/", file_temperature, ".png"), width = 720, height = 720)
+  #p2 <- ggscatter(temperatures, "temperatures", "bestCostByT", size = 2, title = title,
+  #               xlab = "Temperatura",  ylab = "Costo",
+  #               mean.point = FALSE, color = "#00AFBB", shape = 21) %>% 
+  #  ggexport(filename = paste0("../plots/", file_temperature, ".png"), width = 720, height = 720)
   
-  write.csv(costs, paste0("../output/", file_costs, ".csv"))
-  write.csv(temperatures, paste0("../output/", file_temperature, ".csv"))
+  #write.csv(costs, paste0("../output/", file_costs, ".csv"))
+  #write.csv(temperatures, paste0("../output/", file_temperature, ".csv"))
   return(invisible(actualSolution))
 }
 
