@@ -32,7 +32,7 @@ simulatedAnnealing <- function(graph, nodes, flow, FUN, Tmax, Tmin, it, beta, na
     }
     #T <- T - n*beta
     T <- T*beta
-    print(T)
+    #print(T)
     temperatures[n] <- T
     bestCostByT[n] <- actualCost
     n <- n + 1
