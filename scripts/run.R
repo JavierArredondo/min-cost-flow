@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 args = commandArgs(trailingOnly=TRUE)
 
-file = args[1]
-iteration = args[2]
+workdir = args[1]
+file = args[2]
 algorithm = args[3]
-workdir = args[4]
+iteration = args[4]
 
 # stndrd10 stndrd19 cap1 cap10
 

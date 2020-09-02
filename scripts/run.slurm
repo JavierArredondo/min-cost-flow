@@ -4,7 +4,7 @@
 #SBATCH -n 1
 #SBATCH --array=1-50%50
 #SBATCH --output=/home/jarredondo/projects/min-cost-flow/logs/pipes/%a_%A.txt
-#SBATCH --error=/home/jarredondo/projects/QAP/min-cost-flow/pipes/%a_%A.err
+#SBATCH --error=/home/jarredondo/projects/min-cost-flow/logs/pipes/%a_%A.err
 #SBATCH --mail-user=javier.arredondo.c@usach.cl
 #SBATCH --mail-type=ALL
 
@@ -16,4 +16,4 @@ file='stndrd10'
 algorithm=1
 
 
-Rscript --vanilla main.R $workdir $file $algorithm ${SLURM_ARRAY_TASK_ID} 
+Rscript --vanilla run.R $workdir $file $algorithm ${SLURM_ARRAY_TASK_ID} 
