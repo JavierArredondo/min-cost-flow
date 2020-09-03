@@ -1,0 +1,6 @@
+Error in file(file, "rt") : cannot open the connection
+Calls: read.csv -> read.table -> file
+In addition: Warning message:
+In file(file, "rt") :
+  cannot open file '49solutions//home/jarredondo/projects/min-cost-flow/_solution.csv': No such file or directory
+Execution halted
