@@ -13,7 +13,7 @@ nodes <- read.csv(paste0(workdir, "solutions/", file, "_solution_nodes.csv"))
 flow_initial_solution <- graph$flow
 cost_initial_solution <- calculateCost(graph, flow_initial_solution)
 
-settings = read.csv(paste0(workdir, "settings/", file, "_settings.csv"))
+params = read.csv(paste0(workdir, "settings/", file, "_settings.csv"))
 
 output = data.frame()
 
@@ -23,28 +23,24 @@ output = data.frame()
 #system(command, intern = FALSE, ignore.stdout = FALSE, ignore.stderr = FALSE, wait = FALSE, input = NULL)
 
 
-for(i in 1:nrow(settings)) {
+for(i in 1:nrow(params)) {
   flow <- flow_initial_solution
   graph$flow <- NULL
-  
-  start_time = Sys.time()
-  
+    
   t0 = params[i,]$t0
   tf = params[i,]$tf
   it = params[i,]$it
   lambda = params[i,]$lambda
   algorithm = params[i,]$algorithm
-  
+  print(params[i,])
   if (algorithm == 1) {
-    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor1, t0, tf, it, lambda, file, f)
+    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor1, t0, tf, it, lambda, file)
   } else {
-    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor2, t0, tf, it, lambda, file, f)
+    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor2, t0, tf, it, lambda, file)
   }
   # solution = simulatedAnnealing(graph, nodes$nodes, flow, ff, t0, tf, it, lambda, file)
   cost = calculateCost(graph, solution)
-  output = rbind(output, solution)
+  output = rbind(output, c(cost, solution))
 }
 
-colnames(output) = c("nodes", "arcs", "algorithm", "t0", "tf", "it", "lambda", "cost", "total_time")
-
-write.table(output, paste0(workdir, "results/", file, "_algorithm", algorithm, "_", iteration, ".csv"), sep=";", dec = ".", row.names = F)
+write.table(output, paste0(workdir, "settings/solutions_", file, ".csv"), sep=";", dec = ".", row.names = F)
