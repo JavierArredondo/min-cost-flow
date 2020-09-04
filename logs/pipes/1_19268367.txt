@@ -1,0 +1,8 @@
+  algorithm       t0   tf it lambda
+1         2 14867566 1000 30   0.99
+  algorithm       t0     tf it lambda
+2         1 14867566 100000 15   0.79
+  algorithm       t0   tf it lambda
+3         1 49558555 1000 30   0.94
+  algorithm       t0    tf it lambda
+4         2 14867566 10000 15   0.99

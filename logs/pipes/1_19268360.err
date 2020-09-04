@@ -1,0 +1,4 @@
+Warning in install.packages("ggpubr") :
+  'lib = "/home/lmod/software/R/4.0.0-intel-2019b/lib64/R/library"' is not writable
+Error in install.packages("ggpubr") : unable to install packages
+Execution halted

@@ -1,0 +1,2 @@
+  algorithm       t0     tf it lambda
+2         1 14867566 100000 15   0.79

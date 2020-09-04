@@ -1,4 +1,7 @@
 #!/usr/bin/env Rscript
+
+#install.packages("ggpubr")
+
 args = commandArgs(trailingOnly=TRUE)
 
 workdir = args[1]
@@ -14,7 +17,6 @@ flow_initial_solution <- graph$flow
 cost_initial_solution <- calculateCost(graph, flow_initial_solution)
 
 params = read.csv(paste0(workdir, "settings/", file, "_settings.csv"))
-
 output = data.frame()
 
 #pid = Sys.getpid()
@@ -34,9 +36,9 @@ for(i in 1:nrow(params)) {
   algorithm = params[i,]$algorithm
   print(params[i,])
   if (algorithm == 1) {
-    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor1, t0, tf, it, lambda, file)
+    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor1, t0, tf, it, lambda, f=file, name="setting", with.plot=TRUE)
   } else {
-    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor2, t0, tf, it, lambda, file)
+    solution = simulatedAnnealing(graph, nodes$nodes, flow, generateNeighboor2, t0, tf, it, lambda, f=file, name="setting", with.plot=TRUE)
   }
   # solution = simulatedAnnealing(graph, nodes$nodes, flow, ff, t0, tf, it, lambda, file)
   cost = calculateCost(graph, solution)
@@ -44,3 +46,4 @@ for(i in 1:nrow(params)) {
 }
 
 write.table(output, paste0(workdir, "settings/solutions_", file, ".csv"), sep=";", dec = ".", row.names = F)
+
